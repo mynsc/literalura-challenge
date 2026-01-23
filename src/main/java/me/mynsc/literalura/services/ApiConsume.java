@@ -7,13 +7,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ApiConsume {
-    private HttpClient client;
-
-    public ApiConsume() {
-        this.client = HttpClient.newHttpClient();
-    }
-
     public String getJson(String url) {
+        HttpClient client = HttpClient.newHttpClient();
+
         HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(url))    
         .build();
