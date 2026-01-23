@@ -5,15 +5,16 @@ import java.util.List;
 public class Book {
     private String title; 
     private Integer downloadCount; 
-    private List<String> languages; 
+    private Language language;
     private List<DataPerson> authors;
 
     public Book(DataBook dataBook) {
         this.title = dataBook.title();
         this.downloadCount = dataBook.downloadCount();
-        this.languages = dataBook.languages();
+        this.language = Language.fromString(dataBook.language().split(",")[0].trim());
         this.authors = dataBook.authors();
     }
+    
     public String getTitle() {
         return title;
     }
@@ -30,12 +31,12 @@ public class Book {
         this.downloadCount = downloadCount;
     }
 
-    public List<String> getLanguages() {
-        return languages;
+    public Language getLanguages() {
+        return language;
     }
 
-    public void setLanguages(List<String> languages) {
-        this.languages = languages;
+    public void setLanguages(Language language) {
+        this.language = language;
     }
 
     public List<DataPerson> getAuthors() {
