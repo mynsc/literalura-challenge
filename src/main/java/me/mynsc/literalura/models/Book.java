@@ -2,10 +2,28 @@ package me.mynsc.literalura.models;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
+@Entity
+@Table(name = "books")
 public class Book {
-    private String title; 
-    private Integer downloadCount; 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
+    @Column(unique = true)
+    private String title;
+    private Integer downloadCount;
+    @Enumerated(EnumType.STRING)
     private Language language;
+    @Transient
     private List<DataPerson> authors;
 
     public Book(DataBook dataBook) {

@@ -7,6 +7,7 @@ import java.util.Scanner;
 import me.mynsc.literalura.models.Book;
 import me.mynsc.literalura.models.DataBook;
 import me.mynsc.literalura.models.DataResults;
+import me.mynsc.literalura.repository.BookRepository;
 import me.mynsc.literalura.services.ApiConsume;
 import me.mynsc.literalura.services.DataConverter;
 
@@ -14,9 +15,13 @@ public class Main {
     private Scanner inpScanner = new Scanner(System.in);
     private ApiConsume apiConsume = new ApiConsume();
     private DataConverter converter = new DataConverter();
+    private BookRepository bookRepository;
     private final String URL = "https://gutendex.com/books/?";
 
-
+    public Main(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+    
     public void showMenu() {
         int option = -1;
 
@@ -82,7 +87,8 @@ public class Main {
         String search = inpScanner.nextLine();
         
         Book book = getBook(search);
-        
+        bookRepository.save(book);
+
         System.out.println(book);
     }
     
