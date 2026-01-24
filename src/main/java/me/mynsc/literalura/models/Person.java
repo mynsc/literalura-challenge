@@ -1,9 +1,25 @@
 package me.mynsc.literalura.models;
 
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "authors")
 public class Person {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private Integer birthYear;
     private Integer deathYear;
+    @OneToMany(mappedBy = "author")
+    private List<Book> books;
 
     public Person(DataPerson dataPerson) {
         this.name = dataPerson.name();
