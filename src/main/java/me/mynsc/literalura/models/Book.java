@@ -9,8 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "books")
@@ -23,7 +23,7 @@ public class Book {
     private Integer downloadCount;
     @Enumerated(EnumType.STRING)
     private Language language;
-    @Transient
+    @ManyToOne
     private Person author;
 
     public Book(DataBook dataBook) {
