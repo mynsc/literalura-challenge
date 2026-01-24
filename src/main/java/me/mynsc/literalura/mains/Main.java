@@ -67,17 +67,22 @@ public class Main {
         // (Validaciones: Opción 1: No insertar el mismo libro más de una vez. Mostrar mensaje si no se encuentra el libro en la API. Opciones 2-5: Mostrar un mensaje si no hay datos en la base de datos.)
     }
 
+    public Book getBook(String search) {
+        String searchEncoded = URLEncoder.encode(search, StandardCharsets.UTF_8);
+        String json = apiConsume.getJson(URL + "search=" + searchEncoded);
+
+        DataResults results = converter.getData(json, DataResults.class);
+        DataBook dataBook = results.results().get(0);
+
+        return new Book(dataBook);
+    }
+    
     public void searchByTitle() {
         System.out.println("Ingrese el título del libro que busca");
         String search = inpScanner.nextLine();
         
-        String searchEncoded = URLEncoder.encode(search, StandardCharsets.UTF_8);
-        String json = apiConsume.getJson(URL + "search=" + searchEncoded);
-        DataResults results = converter.getData(json, DataResults.class);
-
-        DataBook dataBook = results.results().get(0);
-        Book book = new Book(dataBook);
-
+        Book book = getBook(search);
+        
         System.out.println(book);
     }
     
