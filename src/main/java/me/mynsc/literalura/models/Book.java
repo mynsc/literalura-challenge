@@ -24,13 +24,13 @@ public class Book {
     @Enumerated(EnumType.STRING)
     private Language language;
     @Transient
-    private List<DataPerson> authors;
+    private DataPerson authors;
 
     public Book(DataBook dataBook) {
         this.title = dataBook.title();
         this.downloadCount = dataBook.downloadCount();
         this.language = Language.fromString(dataBook.language().get(0));
-        this.authors = dataBook.authors();
+        this.authors = dataBook.authors().get(0);
     }
     
     public String getTitle() {
@@ -57,11 +57,11 @@ public class Book {
         this.language = language;
     }
 
-    public List<DataPerson> getAuthors() {
+    public DataPerson getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<DataPerson> authors) {
+    public void setAuthors(DataPerson authors) {
         this.authors = authors;
     }
 
