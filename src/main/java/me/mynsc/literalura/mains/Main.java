@@ -2,6 +2,7 @@ package me.mynsc.literalura.mains;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Scanner;
 
 import me.mynsc.literalura.models.Book;
@@ -45,7 +46,7 @@ public class Main {
                     break;
                 }
                 case 2: {
-                    // listar libros registrados
+                    printBooks();
                     break;
                 }
                 case 3: {
@@ -91,5 +92,11 @@ public class Main {
 
         System.out.println(book);
     }
-    
+
+    public void printBooks() {
+        List<Book> bookList = bookRepository.findAll();
+
+        bookList.stream()
+            .forEach(System.out::println);
+    }
 }
