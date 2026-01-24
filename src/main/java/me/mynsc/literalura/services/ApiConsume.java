@@ -11,8 +11,8 @@ public class ApiConsume {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(url))    
-        .build();
+            .uri(URI.create(url))    
+            .build();
 
         try {
             HttpResponse<String> response = client
