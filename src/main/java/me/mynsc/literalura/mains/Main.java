@@ -1,9 +1,21 @@
 package me.mynsc.literalura.mains;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+
+import me.mynsc.literalura.models.Book;
+import me.mynsc.literalura.models.DataBook;
+import me.mynsc.literalura.models.DataResults;
+import me.mynsc.literalura.services.ApiConsume;
+import me.mynsc.literalura.services.DataConverter;
 
 public class Main {
     private Scanner inpScanner = new Scanner(System.in);
+    private ApiConsume apiConsume = new ApiConsume();
+    private DataConverter converter = new DataConverter();
+    private final String URL = "https://gutendex.com/books/?";
+
 
     public void showMenu() {
         int option = -1;
@@ -24,7 +36,7 @@ public class Main {
 
             switch (option) {
                 case 1: {
-                    // buscar por titulo
+                    searchByTitle();
                     break;
                 }
                 case 2: {
@@ -55,5 +67,18 @@ public class Main {
         // (Validaciones: Opción 1: No insertar el mismo libro más de una vez. Mostrar mensaje si no se encuentra el libro en la API. Opciones 2-5: Mostrar un mensaje si no hay datos en la base de datos.)
     }
 
+    public void searchByTitle() {
+        System.out.println("Ingrese el título del libro que busca");
+        String search = inpScanner.nextLine();
+        
+        String searchEncoded = URLEncoder.encode(search, StandardCharsets.UTF_8);
+        String json = apiConsume.getJson(URL + "search=" + searchEncoded);
+        DataResults results = converter.getData(json, DataResults.class);
+
+        DataBook dataBook = results.results().get(0);
+        Book book = new Book(dataBook);
+
+        System.out.println(book);
+    }
     
 }
