@@ -1,6 +1,6 @@
 package me.mynsc.literalura.models;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,13 +24,16 @@ public class Book {
     @Enumerated(EnumType.STRING)
     private Language language;
     @Transient
-    private DataPerson authors;
+    private Person author;
 
     public Book(DataBook dataBook) {
         this.title = dataBook.title();
         this.downloadCount = dataBook.downloadCount();
         this.language = Language.fromString(dataBook.language().get(0));
-        this.authors = dataBook.authors().get(0);
+        this.author = dataBook.authors()
+            .stream()
+            .map(d -> new Person(d))
+            .collect(Collectors.toList()).get(0);
     }
     
     public String getTitle() {
@@ -57,12 +60,12 @@ public class Book {
         this.language = language;
     }
 
-    public DataPerson getAuthors() {
-        return authors;
+    public Person getAuthor() {
+        return author;
     }
 
-    public void setAuthors(DataPerson authors) {
-        this.authors = authors;
+    public void setAuthor(Person author) {
+        this.author = author;
     }
 
     @Override
@@ -71,6 +74,6 @@ public class Book {
                 $s
                 por $s
                 Descargado $d veces
-                """.formatted(title, downloadCount, authors);
+                """.formatted(title, downloadCount, author);
     }
 }
