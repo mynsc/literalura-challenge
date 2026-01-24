@@ -12,7 +12,7 @@ public record DataBook(
     @JsonAlias("download_count")
     Integer downloadCount, 
     @JsonAlias("languages")
-    String language, 
+    List<String> language, 
     @JsonAlias("authors")
     List<DataPerson> authors
 ) {}

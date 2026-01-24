@@ -11,7 +11,7 @@ public class Book {
     public Book(DataBook dataBook) {
         this.title = dataBook.title();
         this.downloadCount = dataBook.downloadCount();
-        this.language = Language.fromString(dataBook.language().split(",")[0].trim());
+        this.language = Language.fromString(dataBook.language().get(0));
         this.authors = dataBook.authors();
     }
     
