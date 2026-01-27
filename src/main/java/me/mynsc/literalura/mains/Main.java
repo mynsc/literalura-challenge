@@ -54,7 +54,7 @@ public class Main {
                     break;
                 }
                 case 3: {
-                    // listar autores registrados
+                    printRegisterAuthors();
                     break;
                 }
                 case 4: {
@@ -122,5 +122,17 @@ public class Main {
 
         bookList.stream()
             .forEach(System.out::println);
+    }
+
+    public void printRegisterAuthors() {
+        List<Person> authors = personRepository.findAll();
+        
+        if (authors.isEmpty()) {
+            System.out.println("No hay autores registrados");
+            return;
+        }
+
+        authors.forEach(System.out::println);
+        System.out.println();
     }
 }
