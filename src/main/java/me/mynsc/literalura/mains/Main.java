@@ -118,10 +118,14 @@ public class Main {
     }
 
     public void printBooks() {
-        List<Book> bookList = bookRepository.findAll();
+        List<Book> books = bookRepository.findAll();
 
-        bookList.stream()
-            .forEach(System.out::println);
+        if (books.isEmpty()) {
+            System.out.println("No hay libros registrados");
+            return;
+        }
+
+        books.forEach(System.out::println);
     }
 
     public void printRegisterAuthors() {
