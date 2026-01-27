@@ -1,11 +1,10 @@
 package me.mynsc.literalura.models;
 
-import java.util.stream.Collectors;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,17 +22,21 @@ public class Book {
     private Integer downloadCount;
     @Enumerated(EnumType.STRING)
     private Language language;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Person author;
+
+    public Book() {}
 
     public Book(DataBook dataBook) {
         this.title = dataBook.title();
         this.downloadCount = dataBook.downloadCount();
         this.language = Language.fromString(dataBook.language().get(0));
-        this.author = dataBook.authors()
-            .stream()
-            .map(d -> new Person(d))
-            .collect(Collectors.toList()).get(0);
+        
+        if (dataBook.authors() != null && !dataBook.authors().isEmpty()) {
+            this.author = new Person(dataBook.authors().get(0));
+        } else {
+            this.author = new Person("Desconocido", null, null);
+        }
     }
     
     public String getTitle() {
@@ -71,9 +74,9 @@ public class Book {
     @Override
     public String toString() {
         return """
-                $s
-                por $s
-                Descargado $d veces
-                """.formatted(title, downloadCount, author);
+                %s
+                por %s
+                Descargado %d veces
+                """.formatted(title, author != null ? author.getName() : "Desconocido", downloadCount);
     }
 }
