@@ -9,6 +9,7 @@ import me.mynsc.literalura.models.Book;
 import me.mynsc.literalura.models.DataBook;
 import me.mynsc.literalura.models.DataResults;
 import me.mynsc.literalura.repository.BookRepository;
+import me.mynsc.literalura.repository.PersonRepository;
 import me.mynsc.literalura.services.ApiConsume;
 import me.mynsc.literalura.services.DataConverter;
 
@@ -17,10 +18,12 @@ public class Main {
     private ApiConsume apiConsume = new ApiConsume();
     private DataConverter converter = new DataConverter();
     private BookRepository bookRepository;
+    private PersonRepository personRepository;
     private final String URL = "https://gutendex.com/books/?";
 
-    public Main(BookRepository bookRepository) {
+    public Main(BookRepository bookRepository, PersonRepository personRepository) {
         this.bookRepository = bookRepository;
+        this.personRepository = personRepository;
     }
     
     public void showMenu() {
