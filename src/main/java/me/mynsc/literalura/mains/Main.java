@@ -8,6 +8,7 @@ import java.util.Scanner;
 import me.mynsc.literalura.models.Book;
 import me.mynsc.literalura.models.DataBook;
 import me.mynsc.literalura.models.DataResults;
+import me.mynsc.literalura.models.Person;
 import me.mynsc.literalura.repository.BookRepository;
 import me.mynsc.literalura.repository.PersonRepository;
 import me.mynsc.literalura.services.ApiConsume;
@@ -91,6 +92,26 @@ public class Main {
         String search = inpScanner.nextLine();
         
         Book book = getBook(search);
+        
+        // verify if the book is registered
+        if (bookRepository.findByTitle(book.getTitle()).isPresent()) {
+            System.out.println("El libro ya ha sido registrado");
+            return;
+        }
+        
+        Person author = book.getAuthor();
+        var existingAuthor = personRepository.findByName(author.getName());
+        
+        // verify if the author already exists
+        if (existingAuthor.isPresent()) {
+            // link existing author to the respective book
+            book.setAuthor(existingAuthor.get());
+        } else {
+            // persist new author to the database
+            personRepository.save(author);
+        }
+        
+        // persist new book to the database
         bookRepository.save(book);
 
         System.out.println(book);

@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import me.mynsc.literalura.models.Book;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
-    Optional<Book> findByTitleIgnoreCase(String title);
+    Optional<Book> findByTitle(String title);
 }
