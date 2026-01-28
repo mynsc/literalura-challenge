@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import me.mynsc.literalura.models.Book;
 import me.mynsc.literalura.models.DataBook;
 import me.mynsc.literalura.models.DataResults;
+import me.mynsc.literalura.models.Language;
 import me.mynsc.literalura.models.Person;
 import me.mynsc.literalura.repository.BookRepository;
 import me.mynsc.literalura.repository.PersonRepository;
@@ -63,7 +64,7 @@ public class Main {
                     break;
                 }
                 case 5: {
-                    // listar libros por idioma
+                    printBooksByLanguage();
                     break;
                 }
                 case 0: {
@@ -71,11 +72,10 @@ public class Main {
                    break;
                 }
                 default: {
-
+                    System.out.println("Opción no válida");
                 }
             }
         }
-        // (Validaciones: Opción 1: No insertar el mismo libro más de una vez. Mostrar mensaje si no se encuentra el libro en la API. Opciones 2-5: Mostrar un mensaje si no hay datos en la base de datos.)
     }
 
     public Book getBook(String search) {
@@ -89,14 +89,13 @@ public class Main {
     }
     
     public void searchByTitle() {
-        System.out.println("Ingrese el título del libro que busca");
+        System.out.println("Ingrese el título del libro que busca: ");
         String search = inpScanner.nextLine();
         
         Book book;
         try {
             book = getBook(search);
         }  catch (IndexOutOfBoundsException e) {
-            // throw new RuntimeException(e);
             System.out.println("No se encontró el libro");
             return;
         }
@@ -169,5 +168,20 @@ public class Main {
         }
 
         authorsAliveIn.forEach(System.out::println);
+    }
+
+    public void printBooksByLanguage() {
+        System.out.println("Ingrese el lenguaje del libro que busca: ");
+        String search = inpScanner.nextLine();
+        Language language = Language.fromLanguageFullName(search);
+
+        List<Book> books = bookRepository.findByLanguage(language);
+        
+        if (books.isEmpty()) {
+            System.out.println("No hay libros registrados con lenguaje solicitado");
+            return;
+        }
+        
+        books.forEach(System.out::println);
     }
 }
