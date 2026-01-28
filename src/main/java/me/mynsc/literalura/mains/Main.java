@@ -3,6 +3,7 @@ package me.mynsc.literalura.mains;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -107,7 +108,7 @@ public class Main {
         }
         
         Person author = book.getAuthor();
-        var existingAuthor = personRepository.findByName(author.getName());
+        Optional<Person> existingAuthor = personRepository.findByName(author.getName());
         
         // verify if the author already exists
         if (existingAuthor.isPresent()) {
@@ -175,13 +176,13 @@ public class Main {
         String search = inpScanner.nextLine();
         Language language = Language.fromLanguageFullName(search);
 
-        List<Book> books = bookRepository.findByLanguage(language);
+        List<Book> booksByLanguage = bookRepository.findByLanguage(language);
         
-        if (books.isEmpty()) {
+        if (booksByLanguage.isEmpty()) {
             System.out.println("No hay libros registrados con lenguaje solicitado");
             return;
         }
-        
-        books.forEach(System.out::println);
+
+        booksByLanguage.forEach(System.out::println);
     }
 }
