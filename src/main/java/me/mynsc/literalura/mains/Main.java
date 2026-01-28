@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import me.mynsc.literalura.models.Book;
 import me.mynsc.literalura.models.DataBook;
@@ -42,7 +43,7 @@ public class Main {
                     """);
 
             option = inpScanner.nextInt();
-            inpScanner.nextLine(); // register new line of the buffer
+            inpScanner.nextLine(); // consume newline from the input buffer
 
             switch (option) {
                 case 1: {
@@ -58,7 +59,7 @@ public class Main {
                     break;
                 }
                 case 4: {
-                    // listar autores vivos en un determinado año
+                    printAuthorsAliveInYear();
                     break;
                 }
                 case 5: {
@@ -91,7 +92,14 @@ public class Main {
         System.out.println("Ingrese el título del libro que busca");
         String search = inpScanner.nextLine();
         
-        Book book = getBook(search);
+        Book book;
+        try {
+            book = getBook(search);
+        }  catch (IndexOutOfBoundsException e) {
+            // throw new RuntimeException(e);
+            System.out.println("No se encontró el libro");
+            return;
+        }
         
         // verify if the book is registered
         if (bookRepository.findByTitle(book.getTitle()).isPresent()) {
@@ -137,6 +145,29 @@ public class Main {
         }
 
         authors.forEach(System.out::println);
-        System.out.println();
+    }
+    
+    public void printAuthorsAliveInYear() {
+        System.out.println("Buscar autores vivos en el año: ");
+        Integer year = inpScanner.nextInt();
+        inpScanner.nextLine(); // consume newline from the input buffer
+
+        List<Person> authors = personRepository.findAll();
+
+        if (authors.isEmpty()) {
+            System.out.println("No hay autores registrados");
+            return;
+        }
+
+        List<Person> authorsAliveIn = authors.stream()
+            .filter(a -> a.getBirthYear() <= year && a.getDeathYear() > year)
+            .collect(Collectors.toList());
+
+        if (authorsAliveIn.isEmpty()) {
+            System.out.println("No hay autores registrados vivos en este año");
+            return;
+        }
+
+        authorsAliveIn.forEach(System.out::println);
     }
 }
