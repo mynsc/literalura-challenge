@@ -55,11 +55,11 @@ public class Book {
         this.downloadCount = downloadCount;
     }
 
-    public Language getLanguages() {
+    public Language getLanguage() {
         return language;
     }
 
-    public void setLanguages(Language language) {
+    public void setLanguage(Language language) {
         this.language = language;
     }
 
