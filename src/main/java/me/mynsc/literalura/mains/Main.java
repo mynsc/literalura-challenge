@@ -2,6 +2,7 @@ package me.mynsc.literalura.mains;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -35,12 +36,16 @@ public class Main {
 
         while (option != 0) {
             System.out.println("""
-                    \t¡Bienvenido a Literalura! Escoja una opción
+                    \n\t¡Bienvenido a Literalura! Escoja una opción
                     1. Buscar libro por título
                     2. Listar libros registrados
                     3. Listar autores registrados
                     4. Listar autores vivos en un determinado año
                     5. Listar libros por idioma
+                    6. Mostrar estadísticas
+                    7. Listar los 10 libros más descargados
+                    8. Buscar autor por nombre
+                    9. Listar autores de los 80s
                     0. Salir
                     """);
 
@@ -66,6 +71,19 @@ public class Main {
                 }
                 case 5: {
                     printBooksByLanguage();
+                    break;
+                }
+                case 6: {
+                    showDownloadStatistics();
+                    break;
+                }
+                case 7: {
+                    break;
+                }
+                case 8: {
+                    break;
+                }
+                case 9: {
                     break;
                 }
                 case 0: {
@@ -179,10 +197,40 @@ public class Main {
         List<Book> booksByLanguage = bookRepository.findByLanguage(language);
         
         if (booksByLanguage.isEmpty()) {
-            System.out.println("No hay libros registrados con lenguaje solicitado");
+            System.out.println("No hay libros registrados del idioma solicitado");
             return;
         }
 
         booksByLanguage.forEach(System.out::println);
+    }
+
+    public void showDownloadStatistics() {
+        Optional<Book> leastOrMostDownloadedBook;
+        String BookTitle;
+
+        IntSummaryStatistics statistics = bookRepository.findAll()
+            .stream()
+            .filter(b -> b.getDownloadCount() > 0)
+            .collect(Collectors.summarizingInt(Book::getDownloadCount));
+
+        System.out.println("\nLa media de descargas es de " + statistics.getAverage());
+
+        leastOrMostDownloadedBook = bookRepository.findLeastDownloadedBook();
+
+        if (leastOrMostDownloadedBook.isPresent()) {
+            BookTitle = leastOrMostDownloadedBook.get().getTitle();
+        } else {
+            BookTitle = "No hay libros registrados";
+        }
+
+        System.out.println("\nEl libro menos descargado es " + BookTitle);
+
+        leastOrMostDownloadedBook = bookRepository.findMostDownloadedBook();
+
+        if (leastOrMostDownloadedBook.isPresent()) {
+            BookTitle = leastOrMostDownloadedBook.get().getTitle();
+        }
+
+        System.out.println("\nEl libro más descargado es " + BookTitle);
     }
 }
