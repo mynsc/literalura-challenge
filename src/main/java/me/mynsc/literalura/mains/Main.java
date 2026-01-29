@@ -2,6 +2,7 @@ package me.mynsc.literalura.mains;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.InputMismatchException;
 import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Optional;
@@ -45,12 +46,17 @@ public class Main {
                     6. Mostrar estadísticas
                     7. Listar los 5 libros más descargados
                     8. Buscar autor por nombre
-                    9. Listar autores de los 80s
+                    9. Listar autores de los 50s
                     0. Salir
                     """);
 
-            option = inpScanner.nextInt();
-            inpScanner.nextLine(); // consume newline from the input buffer
+            try {
+                option = inpScanner.nextInt();
+            } catch (InputMismatchException e) {
+                option = -1;
+            } finally {
+                inpScanner.nextLine(); // consume newline from the input buffer
+            }
 
             switch (option) {
                 case 1: {
@@ -86,14 +92,15 @@ public class Main {
                     break;
                 }
                 case 9: {
+                    printFifthtiesAuthors();
                     break;
                 }
                 case 0: {
-                   System.out.println("Saliendo de la aplicación...");
+                   System.out.println("\nSaliendo de la aplicación...");
                    break;
                 }
                 default: {
-                    System.out.println("Opción no válida");
+                    System.out.println("\nOpción no válida");
                 }
             }
         }
@@ -110,20 +117,20 @@ public class Main {
     }
     
     public void searchBookByTitle() {
-        System.out.println("Ingrese el título del libro que busca: ");
+        System.out.println("\nIngrese el título del libro que busca: ");
         String search = inpScanner.nextLine();
         
         Book book;
         try {
             book = getBook(search);
         }  catch (IndexOutOfBoundsException e) {
-            System.out.println("No se encontró el libro");
+            System.out.println("\nNo se encontró el libro");
             return;
         }
         
         // verify if the book is registered
         if (bookRepository.findByTitle(book.getTitle()).isPresent()) {
-            System.out.println("El libro ya ha sido registrado");
+            System.out.println("\nEl libro ya ha sido registrado");
             return;
         }
         
@@ -149,7 +156,7 @@ public class Main {
         List<Book> books = bookRepository.findAll();
 
         if (books.isEmpty()) {
-            System.out.println("No hay libros registrados");
+            System.out.println("\nNo hay libros registrados");
             return;
         }
 
@@ -160,7 +167,7 @@ public class Main {
         List<Person> authors = personRepository.findAll();
         
         if (authors.isEmpty()) {
-            System.out.println("No hay autores registrados");
+            System.out.println("\nNo hay autores registrados");
             return;
         }
 
@@ -168,14 +175,14 @@ public class Main {
     }
     
     public void printAuthorsAliveInYear() {
-        System.out.println("Buscar autores vivos en el año: ");
+        System.out.println("\nBuscar autores vivos en el año: ");
         Integer year = inpScanner.nextInt();
         inpScanner.nextLine(); // consume newline from the input buffer
 
         List<Person> authors = personRepository.findAll();
 
         if (authors.isEmpty()) {
-            System.out.println("No hay autores registrados");
+            System.out.println("\nNo hay autores registrados");
             return;
         }
 
@@ -184,7 +191,7 @@ public class Main {
             .collect(Collectors.toList());
 
         if (authorsAliveIn.isEmpty()) {
-            System.out.println("No hay autores registrados vivos en este año");
+            System.out.println("\nNo hay autores registrados vivos en este año");
             return;
         }
 
@@ -192,14 +199,14 @@ public class Main {
     }
 
     public void printBooksByLanguage() {
-        System.out.println("Ingrese el lenguaje del libro que busca: ");
+        System.out.println("\nIngrese el lenguaje del libro que busca: ");
         String search = inpScanner.nextLine();
         Language language = Language.fromLanguageFullName(search);
 
         List<Book> booksByLanguage = bookRepository.findByLanguage(language);
         
         if (booksByLanguage.isEmpty()) {
-            System.out.println("No hay libros registrados del idioma solicitado");
+            System.out.println("\nNo hay libros registrados del idioma solicitado");
             return;
         }
 
@@ -243,16 +250,27 @@ public class Main {
     }
 
     public void searchAuthorByName() {
-        System.out.println("Ingrese el nombre del autor que busca: ");
+        System.out.println("\nIngrese el nombre del autor que busca: ");
         String authorName = inpScanner.nextLine();
 
         Optional<Person> authorFound = personRepository.findAuthorByName(authorName);
 
         if (authorFound.isPresent()) {
-            System.out.println("Autor encontrado: " + authorFound.get());
+            System.out.println("\nAutor encontrado: " + authorFound.get());
         } else {
-            System.out.println("Autor no encontrado");
+            System.out.println("\nAutor no encontrado");
             return;
         }
+    }
+
+    public void printFifthtiesAuthors() {
+        List<Person> fifthtiesAuthorsList = personRepository.getFifthiesAuthors();
+
+        if (fifthtiesAuthorsList.isEmpty()) {
+            System.out.println("\nNo hay autores registrados de los 50s");
+            return;
+        }
+
+        fifthtiesAuthorsList.forEach(System.out::println);
     }
 }
