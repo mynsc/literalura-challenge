@@ -43,7 +43,7 @@ public class Main {
                     4. Listar autores vivos en un determinado año
                     5. Listar libros por idioma
                     6. Mostrar estadísticas
-                    7. Listar los 10 libros más descargados
+                    7. Listar los 5 libros más descargados
                     8. Buscar autor por nombre
                     9. Listar autores de los 80s
                     0. Salir
@@ -78,6 +78,7 @@ public class Main {
                     break;
                 }
                 case 7: {
+                    printTopFiveMostDownloadedBooks();
                     break;
                 }
                 case 8: {
@@ -232,5 +233,11 @@ public class Main {
         }
 
         System.out.println("\nEl libro más descargado es " + BookTitle);
+    }
+
+    public void printTopFiveMostDownloadedBooks() {
+        List<Book> topFiveMostDownloadesBooks = bookRepository.getTopFiveMostDownloadedBooks();
+
+        topFiveMostDownloadesBooks.forEach(System.out::println);
     }
 }

@@ -18,4 +18,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query (value = "SELECT * FROM books ORDER BY download_count DESC LIMIT 1", nativeQuery = true)
     Optional<Book> findMostDownloadedBook();
+
+    @Query (value = "SELECT * FROM books ORDER BY download_count DESC LIMIT 5", nativeQuery = true)
+    List<Book> getTopFiveMostDownloadedBooks();
 }
