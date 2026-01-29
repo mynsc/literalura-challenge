@@ -80,6 +80,6 @@ public class Person {
 
     @Override
     public String toString() {
-        return "%s (%d - %d)".formatted(name, birthYear, deathYear);
+        return "\n%s (%d - %d)".formatted(name, birthYear, deathYear);
     }
 }

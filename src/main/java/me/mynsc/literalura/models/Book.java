@@ -74,9 +74,8 @@ public class Book {
     @Override
     public String toString() {
         return """
-                %s
+                \n%s
                 por %s
-                Descargado %d veces
-                """.formatted(title, author != null ? author.getName() : "Desconocido", downloadCount);
+                Descargado %d veces""".formatted(title, author != null ? author.getName() : "Desconocido", downloadCount);
     }
 }
