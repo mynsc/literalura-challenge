@@ -54,7 +54,7 @@ public class Main {
 
             switch (option) {
                 case 1: {
-                    searchByTitle();
+                    searchBookByTitle();
                     break;
                 }
                 case 2: {
@@ -82,6 +82,7 @@ public class Main {
                     break;
                 }
                 case 8: {
+                    searchAuthorByName();
                     break;
                 }
                 case 9: {
@@ -108,7 +109,7 @@ public class Main {
         return new Book(dataBook);
     }
     
-    public void searchByTitle() {
+    public void searchBookByTitle() {
         System.out.println("Ingrese el título del libro que busca: ");
         String search = inpScanner.nextLine();
         
@@ -239,5 +240,19 @@ public class Main {
         List<Book> topFiveMostDownloadesBooks = bookRepository.getTopFiveMostDownloadedBooks();
 
         topFiveMostDownloadesBooks.forEach(System.out::println);
+    }
+
+    public void searchAuthorByName() {
+        System.out.println("Ingrese el nombre del autor que busca: ");
+        String authorName = inpScanner.nextLine();
+
+        Optional<Person> authorFound = personRepository.findAuthorByName(authorName);
+
+        if (authorFound.isPresent()) {
+            System.out.println("Autor encontrado: " + authorFound.get());
+        } else {
+            System.out.println("Autor no encontrado");
+            return;
+        }
     }
 }
