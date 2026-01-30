@@ -9,22 +9,7 @@ Literalura es una aplicación de consola desarrollada con Spring Boot que permit
 
 ### Menú Principal
 
-<!-- screenshot -->
-```
-===========================================
-MENÚ DE OPCIONES - LITERALURA
-===========================================
-1. Buscar libro por título
-2. Listar libros registrados
-3. Listar autores registrados
-4. Listar autores vivos en un determinado año
-5. Listar libros por idioma
-6. Mostrar estadísticas de descargas
-7. Listar los 5 libros más descargados
-8. Buscar autor por nombre
-9. Listar autores de los 50s
-0. Salir
-```
+<img width="482" height="235" alt="image" src="https://github.com/user-attachments/assets/44bbb41a-d2e0-4477-9914-00ee328a91ea" />
 
 ## Características
 
